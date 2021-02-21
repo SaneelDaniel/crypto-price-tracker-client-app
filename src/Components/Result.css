@@ -1,0 +1,39 @@
+.results__main {
+  width: 70%;
+  border-radius: 10px;
+  flex-direction: column;
+  display: flex;
+}
+
+.data__view {
+  align-self: flex-start;
+  margin-top: 20px;
+}
+
+.table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 90%;
+  font-size: 25px;
+  border-radius: 5px;
+}
+
+.table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: lightgray;
+}
+
+.table tr {
+  font-weight: 500;
+  border: 1px solid darkgray;
+}
+
+.table td {
+  border: 1px solid darkgray;
+  padding: 10px;
+}
+
+.plot {
+  align-self: flex-end;
+}
