@@ -6,8 +6,6 @@ import AppState from "./Context/AppState";
 
 
 function App() {
-
-
   return (
     <div className="App">
       <Header />

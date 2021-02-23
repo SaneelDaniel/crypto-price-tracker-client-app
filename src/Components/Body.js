@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Body.css";
-import Result from "./Result";
+import ResultTable from "./ResultTable";
 import PlotGraph from "./PlotGraph";
-import supportedTickers from "./csvHelper";
 import { FaSearch } from "react-icons/fa";
 import AppContext from "../Context/app-context";
 
+/*
+  Body component that renders and ccontrols all major parts of the app 
+  like search, render search resultTables, render child components as needed
+*/
 function Body() {
   const { searchObjectQuote } = React.useContext(AppContext);
   const {
@@ -17,19 +20,22 @@ function Body() {
   } = React.useContext(AppContext);
 
   const [searchInput, setSearchInput] = useState("");
+  const [dataCopy, setDataCopy] = useState({});
   const [dataFound, setDataFound] = useState(false);
   const [sortedX, setSortedX] = useState([]);
   const [sortedY, setSortedY] = useState([]);
   const [showGraph, setShowGraph] = useState(false);
+  const [renderAutoCompleteList, setrenderAutoCompleteList] = useState(false);
 
-  useEffect(() => {}, [searchObjectQuote]);
+  useEffect(() => {
+    parseData();
+  }, [searchObjectQuote]);
 
   let SEARCH_TICKER_API_URL = `https://crypto-tracker-proxy-api.herokuapp.com/live?symbol=${searchInput}`;
   let SEARCH_DAILYDATA_API_URL = `https://crypto-tracker-proxy-api.herokuapp.com/daily?symbol=${searchInput}`;
 
   const parseData = () => {
     var count = 1;
-    
     if (searchObjectQuote !== {}) {
       if (sortedX !== []) {
         var datesAndOpenValuePairArrray = [];
@@ -46,9 +52,6 @@ function Body() {
             searchObjectQuote[i]["1a. open (USD)"],
           ];
           count++;
-          if (count > 30) {
-            break;
-          }
         }
 
         for (var i = datesAndOpenValuePairArrray.length - 1; i >= 0; i--) {
@@ -61,6 +64,7 @@ function Body() {
           SET_SORTED_Y_VALUE(sortedY);
           setSortedX([]);
           setSortedY([]);
+          setShowGraph(true);
         }
       }
     }
@@ -72,10 +76,6 @@ function Body() {
         .then((response) => response.json())
         .then((json) => {
           SET_SEARCH_OBJECT_QUOTE(json["Time Series (Digital Currency Daily)"]);
-
-          parseData();
-
-          setShowGraph(true);
         })
         .catch((err) => {
           window.alert(err);
@@ -136,6 +136,7 @@ function Body() {
               background: "none",
             }}
           />
+
           <button
             onClick={sendSearchRequest}
             type="submit"
@@ -148,32 +149,31 @@ function Body() {
           >
             Overview
           </button>
-          <button
-            onClick={sendDataRequest}
-            style={{
-              height: "95%",
-              color: "black",
-              borderRadius: "10px",
-              fontSize: "20px",
-            }}
-          >
-            Reload Graph
-          </button>
-          <h4>
-            <span>{"<-"} Click to reload the graph</span>
-            <span> </span>
-          </h4>
         </div>
       </div>
 
       <div className="table">
         {dataFound && (
           <div>
-            <Result></Result>
+            <h3>Overview</h3>
+            <ResultTable></ResultTable>
           </div>
         )}
       </div>
-      <div className="plot">{showGraph && <PlotGraph />}</div>
+      <div className="plot">
+        {showGraph ? (
+          <div>
+            <h3>
+              Daily Price-Chart (Refreshed Everyday at 00:00) (Fetched from
+              AlphaVantageAPI and data since the start of support by
+              alphavantage)
+            </h3>
+            <PlotGraph />
+          </div>
+        ) : dataFound && (
+          <h3>Plot not supported</h3>
+        )}
+      </div>
     </div>
   );
 }

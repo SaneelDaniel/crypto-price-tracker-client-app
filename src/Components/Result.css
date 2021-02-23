@@ -1,5 +1,4 @@
 .results__main {
-  width: 70%;
   border-radius: 10px;
   flex-direction: column;
   display: flex;
@@ -8,20 +7,22 @@
 .data__view {
   align-self: flex-start;
   margin-top: 20px;
+  width: 100%;
+  object-fit: contain;
 }
 
 .table {
   table-layout: fixed;
   border-collapse: collapse;
-  width: 90%;
-  font-size: 25px;
+  font-size: 18px;
   border-radius: 5px;
 }
 
 .table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding: 12px;
+  text-align: left;
   background-color: lightgray;
+  border: 1px solid darkgray;
 }
 
 .table tr {

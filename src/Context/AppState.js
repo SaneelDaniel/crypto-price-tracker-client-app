@@ -1,4 +1,4 @@
-import React, {  useReducer } from "react";
+import React, { useReducer } from "react";
 import AppContext from "./app-context";
 import reducer from "./reducer";
 
